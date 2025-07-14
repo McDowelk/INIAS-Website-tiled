@@ -1,0 +1,155 @@
+/* ============  INIAS landing – style.css (v5-fix)  ============ */
+
+/* ----------  Design-tokens ---------- */
+:root{
+  --clr-maroon:#760000;      /* primair achtergrond  */
+  --clr-blue:  #73AFF3;      /* accent-blauw         */
+  --clr-brown: #281812;      /* donker fallback      */
+  --radius:20px;             /* kaart-radius         */
+  --t-ease:.6s cubic-bezier(.4,0,.2,1);
+
+  --w:250px;                 /* basis-breedte kaart  */
+  --h:710px;                 /* basis-hoogte  kaart  */
+  --gap:.6rem;               /* ruimte tussen cards  */
+}
+
+/* ----------  Reset / basis ---------- */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font:400 16px/2.1 "Segoe UI",Arial,sans-serif;
+  background:var(--clr-maroon);
+  color:var(--clr-blue);
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.deck-wrapper{position:relative;}
+
+.deck-video{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;         /* voor <video>; iframe vult via width/height */
+  border:0;                 /* iframe-rand weg */
+  filter:brightness(.8);    /* iets donker maken */
+  z-index:-1;               /* achter .tile-grid */
+  pointer-events:none;      /* klikken gaat naar links, niet naar video */
+}
+
+/* ----------  Deck-container  ---------- */
+.tile-grid{
+  display:flex;
+  gap:var(--gap);
+  perspective:1200px;
+  max-width:calc(var(--w)*5 + var(--gap)*4);
+  margin-inline:auto;
+  padding:1rem;
+}
+
+/* ----------  Kaart-basis  ---------- */
+.card{
+  position:relative;
+  width:var(--w);
+  height:var(--h);
+  border-radius:var(--radius);
+  overflow:hidden;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:
+      transform var(--t-ease),
+      filter    var(--t-ease),
+      opacity   var(--t-ease);
+}
+
+/* foto via CSS-custom-prop  --img:url('…')  */
+/* kaart toont de video zelf, overlay is slechts schaduw */
+.card::before{
+  content:"";
+  position:absolute; inset:0;
+  background:rgba(40,24,18,.35);    /* heel donkere, half-transparante film */
+  backdrop-filter:brightness(.85);  /* video iets donkerder maken           */
+  transition:inherit;
+}
+
+
+/* Label */
+.card span{
+  position:absolute;
+  inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font:800 2.4rem/1 "Segoe UI",sans-serif;
+  color:var(--clr-blue);
+  mix-blend-mode:difference;
+  pointer-events:none;
+}
+
+/* ----------  3-D beginstanden  ---------- */
+.card--left   {transform:translateX(-25%);}
+.card--left2  {transform:translateX(-10%);}
+.card--center {transform:translateZ(60px);}
+.card--right2 {transform:translateX( 10%);}
+.card--right  {transform:translateX( 25%);}
+
+/* ----------  Hover-effect  ---------- */
+@media (hover:hover){
+  .tile-grid:hover .card:not(:hover){
+    opacity:.35;
+    filter:blur(2px) brightness(.45);
+    transform:scale(.94);
+  }
+  .tile-grid .card:hover{
+    opacity:1;
+    filter:none;
+    transform:translateZ(140px) scale(1.06) rotateY(0deg) !important;
+    z-index:5;
+  }
+}
+
+/* ----------  Mobile-fallback  ---------- */
+@media (max-width:768px){
+  body{align-items:flex-start;}
+  .tile-grid{
+    flex-direction:column;
+    gap:2rem;
+    perspective:none;
+    padding-block:3rem;
+    max-width:90vw;
+  }
+  .card{
+    width:100%;
+    height:60vh;
+    transform:none !important;
+  }
+  .tile-grid:hover .card{filter:none;opacity:1;}
+}
+/* ================= Subpagina's ================= */
+
+.subpage {
+  max-width: 800px;
+  margin: 5rem auto;
+  padding: 2rem;
+  background: var(--clr-brown);
+  border-radius: var(--radius);
+  color: var(--clr-blue);
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.subpage h1 {
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+}
+
+.subpage p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.subpage .cta {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.6rem 1.2rem;
+  background: var(--clr-blue);
+  color: var(--clr-brown);
+  text-decoration: none;
+  border-radius: 6px;
+}
+

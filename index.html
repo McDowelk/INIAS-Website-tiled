@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>INIAS — Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="tile-grid">
+        <a href="about.html" class="card" style="--shift:-80%"><span>Over</span></a>
+        <a href="music.html" class="card" style="--shift:-40%"><span>Muziek</span></a>
+        <a href="albums.html" class="card" style="--shift:  0%"><span>Albums</span></a>
+        <a href="live.html" class="card" style="--shift: 40%"><span>Live</span></a>
+        <a href="contact.html" class="card" style="--shift: 80%"><span>Contact</span></a>
+    </div>
+
+    <!-- video-iframes pas na het renderen van de kaarten toevoegen -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.card').forEach(card => {
+                const iframe = document.createElement('iframe');
+                iframe.src =
+                    "https://www.youtube-nocookie.com/embed/ygR6sNc17u4?autoplay=1&mute=1&loop=1&playlist=ygR6sNc17u4&controls=0&modestbranding=1&playsinline=1";
+                iframe.allow = "autoplay; encrypted-media";
+                iframe.style.border = "0";
+                iframe.style.width = "550%";            // superbreed, zodat we kunnen schuiven
+                iframe.style.height = "109.8%";
+                iframe.style.objectFit = "cover";
+                iframe.style.objectPosition = `${getComputedStyle(card).getPropertyValue('--shift').trim()} 800%`;
+                iframe.style.pointerEvents = "none";
+                card.appendChild(iframe);
+            });
+        });
+    </script>
+<footer>
+    <p>&copy; 2025 INIAS. Alle rechten voorbehouden.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,243 @@
+/* =========  INIAS – kaart-deck met foto-crossfade  ========= */
+
+/* --- tokens --- */
+:root{
+  --clr-maroon:#760000;
+  --clr-blue:#73AFF3;
+  --clr-brown:#281812;
+  --radius:20px;
+  --card-w:250px;
+  --card-h:710px;
+  --t-ease:.6s cubic-bezier(.4,0,.2,1);
+}
+
+/* --- reset / basis --- */
+*,*:before,*:after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font:400 16px/1.6 "Segoe UI",Arial,sans-serif;
+  background:var(--clr-maroon);
+  color:var(--clr-blue);
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* --- container --- */
+.tile-grid{
+  display:flex;gap:.8rem;perspective:1200px;
+  padding:1rem;
+  max-width:calc(var(--card-w)*5 + 4rem);
+}
+
+/* --- kaart --- */
+.card{
+  position:relative;
+  width:var(--card-w);height:var(--card-h);
+  border-radius:var(--radius);
+  overflow:hidden;cursor:pointer;flex-shrink:0;
+  transition:transform var(--t-ease),filter var(--t-ease),opacity var(--t-ease);
+}
+
+/* foto-crossfade in pseudo-element */
+.card::before{
+  content:"";position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  animation:fade 8s infinite alternate;
+}
+@keyframes fade{
+  0%,49% {background-image:var(--img1);}
+  50%,100%{background-image:var(--img2);}
+}
+
+/* label */
+.card span{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font:800 2.4rem/1 "Segoe UI",sans-serif;
+  color:var(--clr-blue);mix-blend-mode:difference;pointer-events:none;
+}
+
+/* --- beginstanden (vlak) --- */
+.card--left  {transform:translateX(-0%);}
+.card--center{transform:translateZ(0px);}
+.card--right {transform:translateX(0%);}
+.card--farL  {transform:translateX(-0%);}
+.card--farR  {transform:translateX(0%);}
+
+/* --- hover-effect desktop --- */
+@media(hover:hover){
+  .tile-grid:hover .card:not(:hover){
+    opacity:.35;filter:blur(2px) brightness(.45);transform:scale(.94);
+  }
+  .tile-grid .card:hover{
+    opacity:1;filter:none;
+    transform:translateZ(140px) scale(1.06) !important;
+    z-index:5;
+  }
+}
+
+/* --- mobiel fallback --- */
+@media(max-width:768px){
+  body{align-items:flex-start;}
+  .tile-grid{
+    flex-direction:column;gap:2rem;perspective:none;padding-block:3rem;
+    max-width:90vw;
+  }
+  .card{width:100%;height:60vh;transform:none !important;}
+  .tile-grid:hover .card{filter:none;opacity:1;}
+}
+
+/* ================= Subpagina's ================= */
+
+/* -------- Algemene stijl voor contentpagina’s -------- */
+body {
+  background: #760000; /* donkerrood */
+  color: #73AFF3;
+  font: 400 16px/1.7 "Segoe UI", Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 4rem 1rem;
+}
+
+.content-box {
+  background: #281812;
+  max-width: 720px;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.4);
+}
+
+h1, h2 {
+  font-weight: 700;
+  color: #73AFF3;
+  margin-top: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+p {
+  margin-top: 1rem;
+}
+
+a.back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: #73AFF3;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a.back-link:hover {
+  text-decoration: underline;
+}
+body.subpage {
+  background-color: #760000;
+  color: #73AFF3;
+  font: 400 17px/1.8 "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 1rem;
+}
+
+/* contentbox met bruine achtergrond */
+.content {
+  background-color: #281812;
+  padding: 3rem;
+  border-radius: 20px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+/* header boven content */
+.sub-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sub-header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #73AFF3;
+}
+
+.sub-header h1 span {
+  font-weight: 800;
+}
+
+.sub-header nav a {
+  color: #73AFF3;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 1rem;
+  display: inline-block;
+}
+.sub-header nav a:hover {
+  text-decoration: underline;
+}
+
+/* tekst opmaak */
+h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  color: #73AFF3;
+}
+
+p {
+  margin-top: 1rem;
+  color: #d0eaff;
+}
+
+em {
+  font-style: italic;
+  color: #ffffff;
+}
+
+/* Contactformulier opmaak */
+.contact-form {
+  display: grid;
+  gap: 1rem;
+  padding: 2rem;
+  background: var(--clr-brown);
+  border-radius: 20px;
+  max-width: 700px;
+  margin: 2rem auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.contact-form label {
+  font-weight: bold;
+  color: var(--clr-blue);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.contact-form button {
+  width: fit-content;
+  padding: 0.8rem 1.4rem;
+  background: var(--clr-blue);
+  color: var(--clr-brown);
+  border: none;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.contact-form button:hover {
+  background: #96caff;
+}
