@@ -119,7 +119,7 @@ body {
     flex-direction: row;
     gap: 1rem;
     perspective: none;
-    padding-block: 1rem;
+    padding-block: 2rem;
     max-width: 90vw;
   }
 
