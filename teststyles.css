@@ -1,113 +1,137 @@
-/* =========  INIAS – kaart-deck met foto-crossfade  ========= */
+/* =========  INIAS – kaart-deck met foto-crossfade + subpagina’s ========= */
 
-/* --- tokens --- */
-:root{
-  --clr-maroon:#760000;
-  --clr-blue:#73AFF3;
-  --clr-brown:#281812;
-  --radius:20px;
-  --card-w:250px;
-  --card-h:710px;
-  --t-ease:.6s cubic-bezier(.4,0,.2,1);
+/* --- design tokens --- */
+:root {
+  --clr-maroon: #760000;
+  --clr-blue: #73AFF3;
+  --clr-brown: #281812;
+  --radius: 20px;
+  --card-w: 250px;
+  --card-h: 710px;
+  --t-ease: .6s cubic-bezier(.4, 0, .2, 1);
 }
 
-/* --- reset / basis --- */
-*,*:before,*:after{box-sizing:border-box;margin:0;padding:0;}
-body{
-  font:400 16px/1.6 "Segoe UI",Arial,sans-serif;
-  background:var(--clr-maroon);
-  color:var(--clr-blue);
-  min-height:100vh;
-  display:flex;align-items:center;justify-content:center;
+/* --- reset & basis --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* --- container --- */
-.tile-grid{
-  display:flex;gap:.8rem;perspective:1200px;
-  padding:1rem;
-  max-width:calc(var(--card-w)*5 + 4rem);
-}
-
-/* --- kaart --- */
-.card{
-  position:relative;
-  width:var(--card-w);height:var(--card-h);
-  border-radius:var(--radius);
-  overflow:hidden;cursor:pointer;flex-shrink:0;
-  transition:transform var(--t-ease),filter var(--t-ease),opacity var(--t-ease);
-}
-
-/* foto-crossfade in pseudo-element */
-.card::before{
-  content:"";position:absolute;inset:0;
-  background-size:cover;background-position:center;
-  animation:fade 8s infinite alternate;
-}
-@keyframes fade{
-  0%,49% {background-image:var(--img1);}
-  50%,100%{background-image:var(--img2);}
-}
-
-/* label */
-.card span{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font:800 2.4rem/1 "Segoe UI",sans-serif;
-  color:var(--clr-blue);mix-blend-mode:difference;pointer-events:none;
-}
-
-/* --- beginstanden (vlak) --- */
-.card--left  {transform:translateX(-0%);}
-.card--center{transform:translateZ(0px);}
-.card--right {transform:translateX(0%);}
-.card--farL  {transform:translateX(-0%);}
-.card--farR  {transform:translateX(0%);}
-
-/* --- hover-effect desktop --- */
-@media(hover:hover){
-  .tile-grid:hover .card:not(:hover){
-    opacity:.35;filter:blur(2px) brightness(.45);transform:scale(.94);
-  }
-  .tile-grid .card:hover{
-    opacity:1;filter:none;
-    transform:translateZ(140px) scale(1.06) !important;
-    z-index:5;
-  }
-}
-
-/* --- mobiel fallback --- */
-@media(max-width:768px){
-  body{align-items:flex-start;}
-  .tile-grid{
-    flex-direction:column;gap:2rem;perspective:none;padding-block:3rem;
-    max-width:90vw;
-  }
-  .card{width:100%;height:60vh;transform:none !important;}
-  .tile-grid:hover .card{filter:none;opacity:1;}
-}
-
-/* ================= Subpagina's ================= */
-
-/* -------- Algemene stijl voor contentpagina’s -------- */
-body {
-  background: #760000; /* donkerrood */
-  color: #73AFF3;
+body, body.subpage {
+  background: var(--clr-maroon);
+  color: var(--clr-blue);
   font: 400 16px/1.7 "Segoe UI", Arial, sans-serif;
+  min-height: 100vh;
+  margin: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   padding: 4rem 1rem;
 }
 
-.content-box {
-  background: #281812;
-  max-width: 720px;
+/* ================= HOME ================= */
+
+.tile-grid {
+  display: flex;
+  gap: .8rem;
+  perspective: 1200px;
+  padding: 1rem;
+  max-width: calc(var(--card-w) * 5 + 4rem);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  position: relative;
+  width: var(--card-w);
+  height: var(--card-h);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform var(--t-ease), filter var(--t-ease), opacity var(--t-ease);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  animation: fade 8s infinite alternate;
+}
+
+@keyframes fade {
+  0%, 49%   { background-image: var(--img1); }
+  50%,100% { background-image: var(--img2); }
+}
+
+.card span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 800 2.4rem/1 "Segoe UI", sans-serif;
+  color: var(--clr-blue);
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+.card--left, .card--center, .card--right,
+.card--farL, .card--farR {
+  transform: translateX(0);
+}
+
+@media (hover: hover) {
+  .tile-grid:hover .card:not(:hover) {
+    opacity: .35;
+    filter: blur(2px) brightness(.45);
+    transform: scale(.94);
+  }
+  .tile-grid .card:hover {
+    opacity: 1;
+    filter: none;
+    transform: translateZ(140px) scale(1.06) !important;
+    z-index: 5;
+  }
+}
+
+@media (max-width: 768px) {
+  .tile-grid {
+    flex-direction: column;
+    gap: 2rem;
+    perspective: none;
+    padding-block: 3rem;
+    max-width: 90vw;
+  }
+  .card {
+    width: 100%;
+    height: 60vh;
+    transform: none !important;
+  }
+  .tile-grid:hover .card {
+    filter: none;
+    opacity: 1;
+  }
+}
+
+/* ================= Subpagina’s ================= */
+
+.content {
+  background-color: var(--clr-brown);
   padding: 3rem;
   border-radius: 20px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.4);
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 }
 
 h1, h2 {
   font-weight: 700;
-  color: #73AFF3;
+  color: var(--clr-blue);
   margin-top: 2rem;
 }
 
@@ -116,77 +140,7 @@ h1 {
 }
 
 h2 {
-  font-size: 1.4rem;
-}
-
-p {
-  margin-top: 1rem;
-}
-
-a.back-link {
-  display: inline-block;
-  margin-bottom: 2rem;
-  color: #73AFF3;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-a.back-link:hover {
-  text-decoration: underline;
-}
-body.subpage {
-  background-color: #760000;
-  color: #73AFF3;
-  font: 400 17px/1.8 "Segoe UI", Arial, sans-serif;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem 1rem;
-}
-
-/* contentbox met bruine achtergrond */
-.content {
-  background-color: #281812;
-  padding: 3rem;
-  border-radius: 20px;
-  max-width: 700px;
-  width: 100%;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-}
-
-/* header boven content */
-.sub-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.sub-header h1 {
-  font-size: 2.5rem;
-  margin: 0;
-  color: #73AFF3;
-}
-
-.sub-header h1 span {
-  font-weight: 800;
-}
-
-.sub-header nav a {
-  color: #73AFF3;
-  text-decoration: none;
-  font-weight: 500;
-  margin-top: 1rem;
-  display: inline-block;
-}
-.sub-header nav a:hover {
-  text-decoration: underline;
-}
-
-/* tekst opmaak */
-h2 {
   font-size: 1.5rem;
-  margin-top: 2rem;
-  color: #73AFF3;
 }
 
 p {
@@ -199,7 +153,45 @@ em {
   color: #ffffff;
 }
 
-/* Contactformulier opmaak */
+a.back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: var(--clr-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a.back-link:hover {
+  text-decoration: underline;
+}
+
+.sub-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sub-header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: var(--clr-blue);
+}
+
+.sub-header h1 span {
+  font-weight: 800;
+}
+
+.sub-header nav a {
+  color: var(--clr-blue);
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 1rem;
+  display: inline-block;
+}
+
+.sub-header nav a:hover {
+  text-decoration: underline;
+}
+
 .contact-form {
   display: grid;
   gap: 1rem;
