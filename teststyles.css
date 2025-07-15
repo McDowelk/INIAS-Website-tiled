@@ -1,52 +1,65 @@
-/* =========  INIAS – kaart-deck met foto-crossfade + subpagina’s ========= */
+/* ============ INIAS landing – style.css (v6) ============ */
 
-/* --- design tokens --- */
+/* ---------- Design Tokens ---------- */
 :root {
   --clr-maroon: #760000;
   --clr-blue: #73AFF3;
   --clr-brown: #281812;
   --radius: 20px;
-  --card-w: 250px;
-  --card-h: 710px;
-  --t-ease: .6s cubic-bezier(.4, 0, .2, 1);
+  --t-ease: .6s cubic-bezier(.4,0,.2,1);
+  --w: 250px;
+  --h: 710px;
+  --gap: .6rem;
 }
 
-/* --- reset & basis --- */
+/* ---------- Reset / Base ---------- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body, body.subpage {
+body {
+  font: 400 16px/2.1 "Segoe UI", Arial, sans-serif;
   background: var(--clr-maroon);
   color: var(--clr-blue);
-  font: 400 16px/1.7 "Segoe UI", Arial, sans-serif;
   min-height: 100vh;
-  margin: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 4rem 1rem;
+  justify-content: center;
 }
 
-/* ================= HOME ================= */
+/* ---------- Deck Wrapper ---------- */
+.deck-wrapper {
+  position: relative;
+}
 
+.deck-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+  filter: brightness(.8);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ---------- Tile Grid ---------- */
 .tile-grid {
   display: flex;
-  gap: .8rem;
+  gap: var(--gap);
   perspective: 1200px;
+  max-width: calc(var(--w) * 5 + var(--gap) * 4);
+  margin-inline: auto;
   padding: 1rem;
-  max-width: calc(var(--card-w) * 5 + 4rem);
-  flex-wrap: wrap;
-  justify-content: center;
 }
 
 .card {
   position: relative;
-  width: var(--card-w);
-  height: var(--card-h);
+  width: var(--w);
+  height: var(--h);
   border-radius: var(--radius);
   overflow: hidden;
   cursor: pointer;
@@ -58,14 +71,9 @@ body, body.subpage {
   content: "";
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  animation: fade 8s infinite alternate;
-}
-
-@keyframes fade {
-  0%, 49%   { background-image: var(--img1); }
-  50%,100% { background-image: var(--img2); }
+  background: rgba(40, 24, 18, .35);
+  backdrop-filter: brightness(.85);
+  transition: inherit;
 }
 
 .card span {
@@ -80,12 +88,13 @@ body, body.subpage {
   pointer-events: none;
 }
 
-.card--left, .card--center, .card--right,
-.card--farL, .card--farR {
-  transform: translateX(0);
-}
+.card--left { transform: translateX(-25%); }
+.card--left2 { transform: translateX(-10%); }
+.card--center { transform: translateZ(60px); }
+.card--right2 { transform: translateX(10%); }
+.card--right { transform: translateX(25%); }
 
-@media (hover: hover) {
+@media (hover:hover) {
   .tile-grid:hover .card:not(:hover) {
     opacity: .35;
     filter: blur(2px) brightness(.45);
@@ -94,12 +103,18 @@ body, body.subpage {
   .tile-grid .card:hover {
     opacity: 1;
     filter: none;
-    transform: translateZ(140px) scale(1.06) !important;
+    transform: translateZ(140px) scale(1.06) rotateY(0deg) !important;
     z-index: 5;
   }
 }
 
+/* ---------- Mobile Fallback ---------- */
 @media (max-width: 768px) {
+  body {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .tile-grid {
     flex-direction: column;
     gap: 2rem;
@@ -107,62 +122,30 @@ body, body.subpage {
     padding-block: 3rem;
     max-width: 90vw;
   }
+
   .card {
     width: 100%;
     height: 60vh;
     transform: none !important;
   }
+
   .tile-grid:hover .card {
     filter: none;
     opacity: 1;
   }
 }
 
-/* ================= Subpagina’s ================= */
+/* ============ Subpages ============ */
 
-.content {
-  background-color: var(--clr-brown);
-  padding: 3rem;
-  border-radius: 20px;
-  max-width: 700px;
-  width: 100%;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-}
-
-h1, h2 {
-  font-weight: 700;
+body.subpage {
+  background: var(--clr-maroon);
   color: var(--clr-blue);
-  margin-top: 2rem;
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-h2 {
-  font-size: 1.5rem;
-}
-
-p {
-  margin-top: 1rem;
-  color: #d0eaff;
-}
-
-em {
-  font-style: italic;
-  color: #ffffff;
-}
-
-a.back-link {
-  display: inline-block;
-  margin-bottom: 2rem;
-  color: var(--clr-blue);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-a.back-link:hover {
-  text-decoration: underline;
+  font: 400 17px/1.8 "Segoe UI", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 1rem;
+  min-height: 100vh;
 }
 
 .sub-header {
@@ -192,12 +175,36 @@ a.back-link:hover {
   text-decoration: underline;
 }
 
+.content {
+  background-color: var(--clr-brown);
+  padding: 3rem;
+  border-radius: var(--radius);
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.content h2 {
+  font-size: 1.5rem;
+  color: var(--clr-blue);
+  margin-top: 2rem;
+}
+
+.content p {
+  margin-top: 1rem;
+  color: #d0eaff;
+}
+
+em {
+  color: #ffffff;
+}
+
 .contact-form {
   display: grid;
   gap: 1rem;
   padding: 2rem;
   background: var(--clr-brown);
-  border-radius: 20px;
+  border-radius: var(--radius);
   max-width: 700px;
   margin: 2rem auto;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
